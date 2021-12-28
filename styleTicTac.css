@@ -116,6 +116,7 @@ body {
 .ctrl-container {
     border: 3px solid black;
     background-color: #5f5c5c;
+    background-color: #f11a1a;
     opacity: 0.8;
     border-radius: 9px;
     color: black;
@@ -159,30 +160,27 @@ body {
 
 .player-active {
     background-color: rgba(49, 49, 49, 0.4);
-    
+    background-color: rgba(241, 26, 26, 0.63);
+
 }
-.player-active .name {
+.player-active .player-label {
     font-weight: 300;
-      
 }
-.player-active .name::after {
-    content: "\2021";
-    font-size: 47px;
+.player-active .player-label::after {
+    content: "\2022";
+    font-size: 70px;
     position: absolute;
-    color:#c7365f;
-    top: -7px;
-    right: -50px;
+    color:rgb(6, 156, 6);
+    left: 5px;
+    top: -32px;
+    right: -125px;
 }
 .player-active .player-score {
     font-weight: 400;
-}
-  
+} 
 .player-active .ctrl-container {
     opacity: 1;
 }
-
-
-
 /* ------ Buttons------- */
 .input-container { 
     grid-area: 1 / 2 / 2 / 3;
@@ -192,7 +190,7 @@ body {
 .btn {
     position: absolute;
     transform: translateX(-50%);
-    color: #444;
+    color: rgb(24, 23, 23);
     background: none;
     border: none;
     font-family: inherit;
