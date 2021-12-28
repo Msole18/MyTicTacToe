@@ -4,9 +4,10 @@ const tictacControler = ( () => {
 
 const UIController = ( () => {
     var DOMstrings = {
-        container: '.container',
+        gameContainer: '.game-container',
         startBtn: '.btn-star',
         newBtn: '.btn-new',
+        box0: '.box-0',
         box1: '.box-1', 
         box2: '.box-2',
         box3: '.box-3',
@@ -14,8 +15,7 @@ const UIController = ( () => {
         box5: '.box-5',
         box6: '.box-6',
         box7: '.box-7',
-        box8: '.box-8',
-        box9: '.box-9'
+        box8: '.box-8'
 
     }
 

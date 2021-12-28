@@ -4,39 +4,45 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <link rel="stylesheet" href="style.css" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:ital,wght@1,900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:100,300,400,600" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="styleTicTac.css" />
     <title>My Tic Tac Toe</title>
   </head>
   <body>
-
-    <div class="container">
-        <div class="box-1"> 
-   
+    <main class="container">
+      <section class="title-container">
+        <h1 class="title">My Tic Tac Toe</h1>
+      </section>
+      <section>
+        <div class="game-container">
+          <div class="box-0">0</div>
+          <div class="box-1">1</div>
+          <div class="box-2">2</div>
+          <div class="box-3">3</div>
+          <div class="box-4">4</div>
+          <div class="box-5">5</div>
+          <div class="box-6">6</div>
+          <div class="box-7">7</div>
+          <div class="box-8">8</div>
         </div>
-        <div class="box-2"> </div>
-        <div class="box-3"> </div>
-        <div class="box-4"> </div>
-        <div class="box-5"> </div>
-        <div class="box-6"> </div>
-        <div class="box-7"> </div>
-        <div class="box-8"> </div>
-        <div class="box-9"> </div>
-        <div class="player-1">
-            <p class="current-label">Player 1</p>
-            <p class="current-score" id="current--1">0</p>
+      </section>
+      <section class="game-control">
+        <div class="ctrl-container player-0  player-active">
+          <p class="player-label">Player 1</p>
+          <p class="player-score" id="player-0">0</p>
         </div>
-        <div class="input-btn">
-            <button class="btn btn-start">🎲 Start</button>
-            <button class="btn btn-new">🔄 New game</button>
+        <div class=" ctrl-container input-container">
+          <button class="btn btn-start">Start</button>
+          <button class="btn btn-reset">Reset</button>
         </div>
-        <div class="player-2">
-            <p class="current-label">Player 2</p>
-            <p class="current-score" id="current--1">0</p>
+        <div class="ctrl-container player-1">
+          <p class="player-label">Player 2</p>
+          <p class="player-score" id="player-1">0</p>
         </div>
-    </div>
-  
-    <!-- <button class="btn btn--start">🎲 Start</button>
-    <button class="btn btn--new">🔄 New game</button> -->
+      </section>
+    </main>
     <script src="app.js"></script>
   </body>
 </html>
