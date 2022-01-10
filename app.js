@@ -1,83 +1,133 @@
+let pruebaGlobal = 'hello';
+
 const tictacControler = ( () => {
-    
-    const winState = [[0, 1, 2], 
-                      [3, 4, 5], 
-                      [6, 7, 8], 
-                      [0, 4, 8], 
-                      [6, 4, 2], 
-                      [2, 5, 8], 
-                      [1, 4, 7], 
-                      [0, 3, 6]];
+    const winCombination = [[0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 4, 8], [6, 4, 2], [2, 5, 8], [1, 4, 7], [0, 3, 6]];
+    const playerOne = { 
+            nameCLass: '', 
+            animalClass: '', 
+            imgSrc:'', 
+            score: 0 
+        },
+        playerTwo = { 
+            nameCLass: '', 
+            animalClass: '', 
+            imgSrc:'', 
+            score: 0 
+        },
+        activePlayer = {
+            nameCLass: '', 
+            animalClass: ''
+        };
 
-
-    return{
+    return {
         // Ramdon player go first
         ramdomPlayer: () => {
-            let activePlayer = (Math.random() >= 0.5) 
-            if (activePlayer >= 0.5) {
-                activePlayer = 'Player 1';
-                document.querySelector('.player-1').classList.add('player-active');
-                document.querySelector('.player-2').classList.remove('player-active');
+            // let actPlayer = (Math.random() >= 0.5) 
+            // actPlayer >= 0.5 ? actPlayer = 'Player 1' : actPlayer = 'Player 2';
+            // console.log('ramdom es: ' + actPlayer);
+            // return actPlayer;
+            let actPlayer = (Math.random() >= 0.5);
+            if (actPlayer >= 0.5) {
+                activePlayer.nameCLass = 'player-1';;
             } else {
-                activePlayer = 'Player 2';
-                document.querySelector('.player-1').classList.remove('player-active');
-                document.querySelector('.player-2').classList.add('player-active');
+                activePlayer.nameCLass = 'player-2';
             }
-            console.log('ramdom es: ' + activePlayer);
+            console.log('ramdom es: ' + activePlayer.nameCLass);
             return activePlayer;
         },
-        animalPlayer: (e) => {
-            let imgScr;
-            e.contains('modal-monkey') ?  imgScr = 'monkey.svg' : imgScr = 'squirrel.png';
-            console.log(`player select: ${imgScr}`);
-            return imgScr;
-        },
-        gameControl: (clickedBox, animal, player) => {
-            console.log("gameControl: ")
-            if (clickedBox.classList.contains('box')) {
-                // 1. convierto lo index en un array el cual posiblemente es deberia pasar a Ctrl 
-                const clickedBoxIndex = Array.from(clickedBox.parentNode.children).indexOf(clickedBox)
-                console.log('Index ' + clickedBoxIndex); 
-                if (clickedBoxIndex >= 0) {
-                    console.log("entro al if TWO")
-                    clickedBox.innerText = animal
-                
-                
-                }   
+        setPlayers:(e, firstPlayer) => {
+            console.log(`antes select: ${e}, and: ${firstPlayer}`);
+            if (e.classList.contains('modal-monkey')) {
+                // set player active 
+                activePlayer.animalClass = 'monkey-class';
+                if (firstPlayer === 'Player 1') {
+                    // set player 1
+                    playerOne.nameCLass = 'player-1';
+                    playerOne.animalClass = 'monkey-class';
+                    playerOne.imgSrc = 'monkey.svg';
+                    //set player 2
+                    playerTwo.nameCLass = 'player-2';
+                    playerTwo.animalClass = 'squirrel-class';
+                    playerTwo.imgSrc = 'squirrel.png';
+                    
+                } else { // its modal monkey player 2
+                    // set player 1
+                    playerOne.nameCLass = 'player-1';
+                    playerOne.animalClass = 'squirrel-class';
+                    playerOne.imgSrc = 'squirrel.png';
+                    //set player 2
+                    playerTwo.nameCLass = 'player-2';
+                    playerTwo.animalClass = 'monkey-class';
+                    playerTwo.imgSrc = 'monkey.svg';
+                }                
+            } else if (e.classList.contains('modal-squirrel')) {
+                // set player active 
+                activePlayer.animalClass = 'squirrel-class';
+                if (firstPlayer === 'Player 1') {
+                    // set player 1
+                    playerOne.nameCLass = 'player-1';
+                    playerOne.animalClass = 'squirrel-class';
+                    playerOne.imgSrc = 'squirrel.png';
+                    //set player 2
+                    playerTwo.nameCLass = 'player-2';
+                    playerTwo.animalClass = 'monkey-class';
+                    playerTwo.imgSrc = 'monkey.svg';
+                } else {
+                    // set player 1
+                    playerOne.nameCLass = 'player-1';
+                    playerOne.animalClass = 'monkey-class';
+                    playerOne.imgSrc = 'monkey.svg';
+                    //set player 2
+                    playerTwo.nameCLass = 'player-2';
+                    playerTwo.animalClass = 'squirrel-class';
+                    playerTwo.imgSrc = 'squirrel.png';
+                }
             }
+            return {playerOne,playerTwo, activePlayer};
         },
-        gameStatus: (clickedBox, animal, player) => {
-            console.log("gameControl: ")
-            if (clickedBox.classList.contains('box')) {
-                // 1. convierto lo index en un array el cual posiblemente es deberia pasar a Ctrl 
-                const clickedBoxIndex = Array.from(clickedBox.parentNode.children).indexOf(clickedBox)
-                console.log('Index ' + clickedBoxIndex); 
-                if (clickedBoxIndex >= 0) {
-                    console.log("entro al if TWO")
-                    clickedBox.innerText = animal
-                
-                
-                }   
-            }
+        // Get box
+        boxClick: (clickedBox, actPlayer, actClass) => {
+            const elementBox = clickedBox.classList.add(actClass);
         },
-
-        nextPlayer: (type) => {
-            let playerSelect;
-            type.contains('modal-monkey') ?  playerSelect = 'monkey' : playerSelect = 'squirrel';
-            console.log(`player select: ${playerSelect}`);
-            // 1. Set de Active player
-            // document.querySelector('.player-0').classList.toggle('player-monkey');
-            // 2. Set de Active player
-            document.querySelector('.player-1').classList.toggle('player-active');
-            document.querySelector('.player-2').classList.toggle('player-active');
-            return playerSelect;
+        checkWinner:(actClass) => {
+            const boxElements = document.querySelectorAll('.box');
+            return winCombination.some(combination => {                
+              return combination.every(index => {                
+                return boxElements[index].classList.contains(actClass)
+              })
+            })
+        },
+        checkDraw: () =>  {
+            const boxElements = document.querySelectorAll('.box');
+            return [...boxElements].every(box => {
+              return box.classList.contains('monkey-class') || box.classList.contains('squirrel-class')
+            })
+        },
+        checkEndGame: (draw, activePlayer) =>  {
+            console.log(`entro a endGame`)
+            if (draw) {
+                console.log('Draw!')
+                
+            } else {
+                console.log(` variable activePlayer es: ${activePlayer}`)
+                console.log(`${activePlayer === "Player 1" ? "Player 1" : "Player 2"} Wins!`)
+            }  
+        },
+        nextPlayer: (actPlayer, actClass) => {
+            actPlayer === 'Player 1' ? actPlayer = 'Player 2' : actPlayer = 'Player 1';
+            actClass === 'monkey-class' ? actPlayer = 'squirrel-class' : actPlayer = 'monkey-class'
+            return actPlayer, actClass;
+        },
+        addScore: (winnerPlayer) => {
+            let score = [,];
+            winnerPlayer === 'Player 1' ? score[0] += 1 : score[1] += 1;
+            return score[0,1];
         }
-    }
 
+    }
 })();
 
 const UIController = ( () => {
-    // let contador = 0
     const DOMstrings = {
         gameContainer: '.game-container',
         modalContainer: '.modal-container',
@@ -86,12 +136,12 @@ const UIController = ( () => {
         btnNewGame: '.btn-new-game',
         btnNext: '.btn-next',
         btnReset: '.btn-reset',
-        playerOne:'.player-1',
-        playerTwo: '.player-2',
-        playerActive: '.player-active',
+        classOne:'.player-1',
+        classTwo: '.player-2',
+        playerActive: 'player-active',
         modal: '.modal',
         modalMsg: '.modal-msg',
-        modalFirstPlayer: '.first-player',
+        modalFirst: '.first-player',
         modalImg: '.modal-img',
         modalMonkey: '.modal-monkey',
         modalSquirrel: '.modal-squirrel',
@@ -101,85 +151,27 @@ const UIController = ( () => {
     }
 
     return {
-        displayBoxCliked: (clickedBox,playerRoll) => {
-            
+        displayBoxCliked: (clickedBox,actPlayer) => {
             if (clickedBox.classList.contains('box')) {
-                console.log('Click tiene la clase'); 
                 
-                if (clickedBox) {
-                    clickedBox.innerText = playerRoll;
-                    
-                    // document.querySelector('.box-img').src = `${playerRoll}`;
-                    // const newHTML = `<div class="card"><div class="front"></div><div class="back"><img src="${playerRoll}" alt=""></div></div>`;
-                    // document.querySelector('.box').insertAdjacentHTML('beforeend',newHTML);
-                    // document.querySelector('.card').style.transform = "rotateY(180deg)";
-                    // document.querySelector('.card').style.transform = "rotateY(180deg)";
-                    // const newHTML = `<img class "box-img" src="${playerRoll}" alt="">`;
-                    // document.querySelector('.back').insertAdjacentHTML('beforeend',newHTML);  
-                    // document.querySelector('.card').style.transform = "rotateY(180deg)";               
-                }   
-            } else {
-                console.log("no tiene clases ")
-                clickedBox.innerText = playerRoll;
+                clickedBox.innerHTML =  actPlayer// Agrega en el HTML el valor del jugador
+               
+
             }
-
-            // if (clickedBox) {
-            //     // clickedBox.innerText = playerRoll;
-            //     document.querySelector('.box-img').src = playerRoll;
-              
-            //     // document.querySelector('.card').style.transform = "rotateY(180deg)";
-            //     // document.querySelector('.card').style.src = `"${playerRoll}"`;
-            // //    selector === 'monkey' ?  playerRoll = 'monkey.svg' : playerRoll = 'squirrel.png';
-            
-                
-                
-            //     // const newHTML = `<div class="card"><div class="front"></div><div class="back">
-            //     //                  <img src="${playerRoll}" alt=""></div></div>`;
-            //     // document.querySelector('.box').insertAdjacentHTML('beforeend',newHTML);
-                
-                
-            // }   
-            
-            // console.log('Probando insertar imagen: ' + boxClick);
-            // if (boxClick.contains('card')) {
-            //     const boxIndex = Array.from(boxClick.parentNode.children).indexOf(clickedBox)
-            //     console.log('Index ' + clickedBoxIndex); 
-            //     if (boxIndex === 0 ) {
-                   
-            //         document.querySelector('.card').style.transform = "rotateY(180deg)";
-            //         const newHTML = '<img src="squirrel.png" alt="">';
-    
-            //         document.querySelector('.back').insertAdjacentHTML('beforeend',newHTML); 
-            //     }   
-            // }
-
-            // const clickedBox = e.target;
-            // if (boxClick.contains('card')) {
-            //     const clickedBoxIndex = Array.from(boxClick.parentNode).indexOf(clickedBox)
-            //     console.log('Index ' + boxClick); 
-            //     // if (clickedBoxIndex === 0) {
-                
-            //     //     document.querySelector('.card').style.transform = "rotateY(180deg)";
-            //     //     const newHTML = '<img src="squirrel.png" alt="">';
-            //     //     document.querySelector('.back').insertAdjacentHTML('beforeend',newHTML);
-            //     // }
-            // }   
-        
-                   
         },
         displayIndex: (actPlayer, playerRoll, gameActive, boxCliked) => {
-            const pOne = document.querySelector(DOMstrings.playerOne),
-                  pTwo = document.querySelector(DOMstrings.playerTwo),
+            const pOne = document.querySelector(DOMstrings.classOne),
+                  pTwo = document.querySelector(DOMstrings.classTwo),
                   bNew = document.querySelector(DOMstrings.btnNewGame),
                   bNext = document.querySelector(DOMstrings.btnNext);
             // 1. Set Active player UI
-            if (actPlayer === 'Player 1') {
-                pOne.classList.add(DOMstrings.playerActive);
-                pTwo.classList.remove(DOMstrings.playerActive);
-            } else {
-                pOne.classList.remove(DOMstrings.playerActive);
-                pTwo.classList.add(DOMstrings.playerActive);
-            }
+            // if (actPlayer === 'Player 1') {
+            //     pOne.classList.add(DOMstrings.playerActive);
+            //     pTwo.classList.remove(DOMstrings.playerActive);
+            // } else {
+            //     pOne.classList.remove(DOMstrings.playerActive);
+            //     pTwo.classList.add(DOMstrings.playerActive);
+            // }
             // 2. Dislabled 'New Game' btn and Enable the 'Next round' btn 
             if(gameActive === true) {
                 bNew.style.visibility = 'hidden';
@@ -190,42 +182,33 @@ const UIController = ( () => {
             }
         },
         //------------MODAL--------------
-        displayModal: (first) => {
+        displayModal: (objActPlayer) => {
             const moContainer = document.querySelector(DOMstrings.modalContainer),
-                  modal = document.querySelector(DOMstrings.modal);
+                  modal = document.querySelector(DOMstrings.modal),
+                  modalPlayer = document.querySelector(DOMstrings.modalFirst),
+                  boxContainer = document.querySelector(DOMstrings.gameContainer);
             //1. Open Modal windows
             moContainer.style.opacity = 1;
             moContainer.style.visibility = 'visible';
             modal.classList.toggle('modal-close');
-            
-            //2. Player Active message         
-            if (document.querySelector(DOMstrings.modalFirstPlayer)) {
-                // console.log('existe')
-                const p = document.querySelector(DOMstrings.modalMsg);
-                const c = document.querySelector(DOMstrings.modalFirstPlayer);
-                p.parentNode.removeChild(c);
-            }
-            const newHTML = `<p class="first-player"><span>${first}</span><br>you go first, so tell us...</p>`;
-            document.querySelector(DOMstrings.modalMsg).insertAdjacentHTML('beforebegin',newHTML);
-
+            //2. Show the Active Player 
+            // boxContainer.classList.remove('player-1');
+            // boxContainer.classList.remove('player-2');
+            // actPlayer === 'Player 1' ? boxContainer.classList.add('player-1') : boxContainer.classList.add('player-2');
+            modalPlayer.innerText = `${objActPlayer.nameCLass === 'player-1' ? 'Player 1' : 'Player 2'}`;
             //3. Clean animal selection
             document.querySelector(DOMstrings.modalMonkey).style.border = ''
             document.querySelector(DOMstrings.modalSquirrel).style.border = '' 
         },
-        updateModalAnimal: (sel) => {
-            const domMonkeyMoldal = document.querySelector(DOMstrings.modalMonkey),
-                  domSquirrelMoldal = document.querySelector(DOMstrings.modalSquirrel);
-            if(sel === 'monkey.svg') {
-                domSquirrelMoldal.style.border = ''
-                domMonkeyMoldal.style.border = '2px solid lime';             
-            } 
-            else if(sel === 'squirrel.png') {
-                domMonkeyMoldal.style.border = ''
-                domSquirrelMoldal.style.border = '2px solid lime';
-            } 
+        updateModalAnimal: (obj) => {
+            const imgMonkey = document.querySelector(DOMstrings.modalMonkey),
+                  imgSquirrel = document.querySelector(DOMstrings.modalSquirrel);
+            // 1. Clean a set the Image Border      
+            imgMonkey.style.border = '';
+            imgSquirrel.style.border = '';      
+            obj.animalClass === 'monkey-class' ? imgMonkey.style.border = '2px solid lime' : imgSquirrel.style.border = '2px solid lime';
         },
         closeModal: (e) => {
-            // console.log('Entre a closeModal');
             document.querySelector(DOMstrings.modal).classList.toggle('modal-close');
             setTimeout(() => { // We set a timer to wait the transition effect
                 document.querySelector(DOMstrings.modalContainer).style.opacity = 0;
@@ -233,81 +216,63 @@ const UIController = ( () => {
             },900);
         },
         // ------- DOM Strings
-        getDOMstrings:() => { // Here we make "public" or make accessible the DOMstrings object for the other App Modules
-            return DOMstrings;
-        }
-    };
-    
+        getDOMstrings:() => DOMstrings
+    };    
 })();
 
 const controller = ((tictacCtrl, UICtrl) => {
     const DOM = UICtrl.getDOMstrings();
-    let playFirst, playerSelection, gameActive = false;;    
+    let activePlayer, playerSelection, gameState = false;  
+    let ctrlPlayerOne, ctrlPlayerTwo,  ctrlActivePlayer;
     // Event listener
     const setupEventListeners = () =>{
+        //--- Modal Events----
+        document.querySelector(DOM.modalImg).addEventListener('click', ctrlPlayerAnimal); // Animal Img click
+        document.querySelector(DOM.btnModalStart).addEventListener('click', ctrlModalStart); //Btn-ModalStart click
+        document.querySelector(DOM.btnModalClose).addEventListener('click', ctrlModalClose); //Btn-ModalClose click
         // --- Boxes click Events----
-        for (let boxes of document.querySelectorAll(DOM.gameContainer)) {
-            boxes.addEventListener('click', ctrlGameClick);
-            // boxes.addEventListener('click', ctrlGameClick,  {once: true}); //Game Contaner click
-        }
+        document.querySelector(DOM.gameContainer).addEventListener('click', ctrlBoxClick); //Boxes click
         //--- Btn Game Events----
         document.querySelector(DOM.btnNewGame).addEventListener('click', ctrlNewGame); //Start-Btn click
         document.querySelector(DOM.btnReset).addEventListener('click', ctrlResetGame); //Reset-Btn click
-        //--- Modal Events----
-        for (let boxes of document.querySelectorAll(DOM.modalImg)) {
-            boxes.addEventListener('click', ctrlPlayerAnimal);
-        }
-        document.querySelector(DOM.btnModalStart).addEventListener('click', ctrlModalStart); //Btn-ModalStart
-        document.querySelector(DOM.btnModalClose).addEventListener('click', ctrlModalClose); //Btn-ModalClose click
     }
     //Game Contaner click
-    const ctrlGameClick = (e) => { 
-        if (gameActive === true) {
-           // tictacCtrl.gameControl(e.target, playerSelection);
-            UICtrl.displayBoxCliked(e.target, playerSelection);
+    let globalScore = []
+    const ctrlBoxClick = (e) => { 
+        if (gameState === true) {            
+            // 1. controlo el box click
+            const boxCliked = tictacCtrl.boxClick(e.target, activePlayer);
+            // 2. Actulizo el boxUI
+            UICtrl.displayBoxCliked(e.target, activePlayer);
+            // 3. Verificar el stado del juego, ganador empate o sigue 
+            if (tictacCtrl.checkWinner(activePlayer)) {
+                gameState = tictacCtrl.checkEndGame(false, activePlayer);
+            } 
+            else if (tictacCtrl.checkDraw()) {
+                gameState = tictacCtrl.checkEndGame(true);
+                // globalScore = tictacCtrl.addScore(activePlayer);
+            } else {
+                activePlayer = tictacCtrl.nextPlayer(activePlayer);
+                console.log('activePlayer: ' + activePlayer);
+            }            
         } 
-        // 1. Ver el jugador activo y el animal activo
-        // 2. guardar el click box en el array
-        // 3. verificar el status del juego
-    //    
-
-    //    const clickedBox = elem.target;
-    //     console.log("ctrlGameClick: " + clickedBox)
-    //     if (clickedBox.classList.contains('box')) {
-    //         // 1. convierto lo index en un array el cual posiblemente es deberia pasar a Ctrl 
-    //         const clickedBoxIndex = Array.from(clickedBox.parentNode.children).indexOf(clickedBox) 
-
-            
-    //         console.log('Index ' + clickedBoxIndex); 
-    //          if (clickedBoxIndex >= 0) {
-    //             console.log("entro al if TWO")
-    //             clickedBox.innerText = animal
-    //             // document.querySelector('.card').style.transform = "rotateY(180deg)";
-    //             // selector === 'monkey' ?  playerSel = 'monkey.svg' : playerSel = 'squirrel.png';
-    //             // const newHTML = `<img src="${playerSel}" alt="">`;
-    //             // document.querySelector('.back').insertAdjacentHTML('beforeend',newHTML); 
-                
-                
-    //             // const newHTML = `<div class="card"><div class="front"></div><div class="back">
-    //             //                  <img src="monkey.svg" alt=""></div></div>`;
-    //             // document.querySelector('.box').insertAdjacentHTML('beforeend',newHTML);
-                
-                
-    //         }   
-    //     }
-    }
-
+        // console.log(`score player 1 ${globalScore[0]} and score player 2 ${globalScore[1]}`)
+    };
     //Btn-ModalStart cick
     const ctrlModalStart = (e) => {
         console.log('Start the Game');
         // 1. Update Game UI
-        UICtrl.displayIndex(playFirst)
+        UICtrl.displayIndex(activePlayer)
         // 2.  Validate the player Roll selection and CLose the Modal
         if (playerSelection === '') {
             alert('Please select an Animal');
         } else {
-            gameActive = true;
+            // playerSelection = tictacCtrl.setPlayers(e.target, activePlayer); // return OBJ selectClass, imgSrc
+            // ctrlPlayerOne = playerSelection.playerOne;
+            // ctrlPlayerTwo = playerSelection.playerTwo;
+            activePlayer.selectClass === 'monkey-class' ? activePlayer = 'monkey-class' : activePlayer = 'squirrel-class';
             UICtrl.closeModal();
+            gameState = true;
         }
     };
     //Btn-ModalClose click
@@ -320,17 +285,20 @@ const controller = ((tictacCtrl, UICtrl) => {
     //Moal-Images click
     const ctrlPlayerAnimal = (e) => {
         // 1. Mirar selecion de Jugador
-        playerSelection = tictacCtrl.animalPlayer(e.target.classList)
+        playerSelection = tictacCtrl.setPlayers(e.target, activePlayer); // return OBJ selectClass, imgSrc
+        ctrlPlayerOne = playerSelection.playerOne;
+        ctrlPlayerTwo = playerSelection.playerTwo;
+        ctrlActivePlayer = playerSelection.activePlayer;
         // 2. Update modal UI
-        UICtrl.updateModalAnimal(playerSelection);
+        UICtrl.updateModalAnimal(ctrlActivePlayer); // need send an animal-class
     };
     //Start-Btn click
     const ctrlNewGame = (e) => {
         console.log('New Game');
         // 1. Select a ramdom Player to plat first
-        playFirst = tictacCtrl.ramdomPlayer();
+        ctrlActivePlayer = tictacCtrl.ramdomPlayer();
         // 2. Display the Modal        
-        UICtrl.displayModal(playFirst);   
+        UICtrl.displayModal(ctrlActivePlayer);  
     };
     //Reset-Btn click
     const ctrlResetGame = (e) => {
@@ -342,14 +310,9 @@ const controller = ((tictacCtrl, UICtrl) => {
     return {        
         init: () => { 
             console.log('App has started');
-            playFirst = '', playerSelection = '', gameActive = false;
-            // for (let boxes of boxesImage) {
-            //     boxes.style.display = 'block';
-            //     boxes.src = 'monkey.svg';
-            // }            
+            activePlayer = '', playerSelection = '', gameActive = false;                               
             setupEventListeners(); 
-            // ctrlStartGame();
-            
+            // ctrlStartGame();           
 
         }
     };
