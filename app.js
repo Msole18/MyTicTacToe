@@ -1,22 +1,42 @@
 let pruebaGlobal = 'hello';
+// tic tictac
+//     - se realizo todo el control, gana enpate o sigue;
+//     - setPlayers: no me queda claro es necesaria setear los todos los valores de los players, de momento solo uno los aributos
+//       nameClass y score de los obj player 1 y 2.
+//     - addScore: de momento lo uso, no me queda claro si es necesario o se puede hacer en el endGame.
+
+// User Interface
+//     1.- falta colocar los flit card effect pero ya sabes hacerlo pero se borro.
+//     2.- falta si o si controlar ahora que se cargue la imgSrc de cada box.
+//     3.- hacer el display de los mensajes de Winner o Draw.
+//     4.- hace falta refrescar la UI despues de terminada alguna ronda
+
+// Cuando termines eso, mira las siguientes ideas
+//     - dependiendo de como muestres el mensaje Winner o Draw. ver que hacer con los botones de Next Round
+//     - ver de modificar la index para que muestre al lado de cada jugador cual animal eligieron.
+//     - hacer el display de los mensajes de Winner o Draw.
+//     colocar una lista que donde elijan cuantas rondas desea jugar. 3 5 7
+
 
 const tictacControler = ( () => {
     const winCombination = [[0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 4, 8], [6, 4, 2], [2, 5, 8], [1, 4, 7], [0, 3, 6]];
     const playerOne = { 
-            nameCLass: '', 
+            nameClass: 'player-1', 
             animalClass: '', 
             imgSrc:'', 
             score: 0 
         },
         playerTwo = { 
-            nameCLass: '', 
+            nameClass: 'player-2', 
             animalClass: '', 
             imgSrc:'', 
             score: 0 
         },
         activePlayer = {
-            nameCLass: '', 
-            animalClass: ''
+            nameClass: '', 
+            animalClass: '',
+            imgSrc:'', 
+            score: 0 
         };
 
     return {
@@ -28,57 +48,50 @@ const tictacControler = ( () => {
             // return actPlayer;
             let actPlayer = (Math.random() >= 0.5);
             if (actPlayer >= 0.5) {
-                activePlayer.nameCLass = 'player-1';;
+                activePlayer.nameClass = playerOne.nameClass; // 'player-1'
             } else {
-                activePlayer.nameCLass = 'player-2';
+                activePlayer.nameClass = playerTwo.nameClass; // 'player-2'
             }
-            console.log('ramdom es: ' + activePlayer.nameCLass);
+            console.log('ramdom es: ' + activePlayer.nameClass);
             return activePlayer;
         },
-        setPlayers:(e, firstPlayer) => {
-            console.log(`antes select: ${e}, and: ${firstPlayer}`);
+        setPlayers:(e, obj) => {
             if (e.classList.contains('modal-monkey')) {
                 // set player active 
                 activePlayer.animalClass = 'monkey-class';
-                if (firstPlayer === 'Player 1') {
+                activePlayer.imgSrc = 'monkey.svg';
+                if (obj.nameClass === 'player-1') { // 'player-1'
                     // set player 1
-                    playerOne.nameCLass = 'player-1';
                     playerOne.animalClass = 'monkey-class';
                     playerOne.imgSrc = 'monkey.svg';
                     //set player 2
-                    playerTwo.nameCLass = 'player-2';
                     playerTwo.animalClass = 'squirrel-class';
                     playerTwo.imgSrc = 'squirrel.png';
                     
                 } else { // its modal monkey player 2
                     // set player 1
-                    playerOne.nameCLass = 'player-1';
                     playerOne.animalClass = 'squirrel-class';
                     playerOne.imgSrc = 'squirrel.png';
-                    //set player 2
-                    playerTwo.nameCLass = 'player-2';
+                    //set player 2;
                     playerTwo.animalClass = 'monkey-class';
                     playerTwo.imgSrc = 'monkey.svg';
                 }                
             } else if (e.classList.contains('modal-squirrel')) {
                 // set player active 
                 activePlayer.animalClass = 'squirrel-class';
-                if (firstPlayer === 'Player 1') {
+                activePlayer.imgSrc = 'squirrel.png';
+                if (obj.nameClass === 'player-1') { // 'player-1'
                     // set player 1
-                    playerOne.nameCLass = 'player-1';
                     playerOne.animalClass = 'squirrel-class';
                     playerOne.imgSrc = 'squirrel.png';
                     //set player 2
-                    playerTwo.nameCLass = 'player-2';
                     playerTwo.animalClass = 'monkey-class';
                     playerTwo.imgSrc = 'monkey.svg';
                 } else {
                     // set player 1
-                    playerOne.nameCLass = 'player-1';
                     playerOne.animalClass = 'monkey-class';
                     playerOne.imgSrc = 'monkey.svg';
                     //set player 2
-                    playerTwo.nameCLass = 'player-2';
                     playerTwo.animalClass = 'squirrel-class';
                     playerTwo.imgSrc = 'squirrel.png';
                 }
@@ -86,14 +99,14 @@ const tictacControler = ( () => {
             return {playerOne,playerTwo, activePlayer};
         },
         // Get box
-        boxClick: (clickedBox, actPlayer, actClass) => {
-            const elementBox = clickedBox.classList.add(actClass);
+        boxClick: (e, obj) => {
+            const elementBox = e.classList.add(obj.animalClass);
         },
-        checkWinner:(actClass) => {
+        checkWinner:(obj) => {
             const boxElements = document.querySelectorAll('.box');
             return winCombination.some(combination => {                
               return combination.every(index => {                
-                return boxElements[index].classList.contains(actClass)
+                return boxElements[index].classList.contains(obj.animalClass);
               })
             })
         },
@@ -103,25 +116,25 @@ const tictacControler = ( () => {
               return box.classList.contains('monkey-class') || box.classList.contains('squirrel-class')
             })
         },
-        checkEndGame: (draw, activePlayer) =>  {
+        checkEndGame: (draw, obj) =>  {
             console.log(`entro a endGame`)
             if (draw) {
                 console.log('Draw!')
                 
             } else {
-                console.log(` variable activePlayer es: ${activePlayer}`)
-                console.log(`${activePlayer === "Player 1" ? "Player 1" : "Player 2"} Wins!`)
+                
+                console.log(`${obj.nameClass === 'player-1' ? "Player 1" : "Player 2"} Wins!`)
             }  
+            
         },
-        nextPlayer: (actPlayer, actClass) => {
-            actPlayer === 'Player 1' ? actPlayer = 'Player 2' : actPlayer = 'Player 1';
-            actClass === 'monkey-class' ? actPlayer = 'squirrel-class' : actPlayer = 'monkey-class'
-            return actPlayer, actClass;
+        nextPlayer: (obj) => {
+            obj.animalClass === 'monkey-class' ? obj.animalClass = 'squirrel-class' : obj.animalClass = 'monkey-class';
+            obj.imgSrc === 'monkey.svg' ? obj.imgSrc = 'squirrel.png' : obj.imgSrc = 'monkey.svg';
+            return obj;
         },
-        addScore: (winnerPlayer) => {
-            let score = [,];
-            winnerPlayer === 'Player 1' ? score[0] += 1 : score[1] += 1;
-            return score[0,1];
+        addScore: (obj) => {
+            obj.nameClass === 'player-1' ? playerOne.score += 1 : playerTwo.score += 1; 
+            return {playerOne, playerTwo} ;
         }
 
     }
@@ -151,13 +164,16 @@ const UIController = ( () => {
     }
 
     return {
-        displayBoxCliked: (clickedBox,actPlayer) => {
-            if (clickedBox.classList.contains('box')) {
-                
-                clickedBox.innerHTML =  actPlayer// Agrega en el HTML el valor del jugador
-               
-
-            }
+        displayBoxCliked: (e,obj) => {
+            e.innerHTML =  obj.animalClass; // Agrega en el HTML el valor del jugador
+            // if (e.classList.contains('box')) {
+    
+            // }
+        },
+        displayScore: (obj) => {
+            document.getElementById(obj.playerOne.nameClass).innerHTML = obj.playerOne.score;
+            document.getElementById(obj.playerTwo.nameClass).innerHTML = obj.playerTwo.score;
+            
         },
         displayIndex: (actPlayer, playerRoll, gameActive, boxCliked) => {
             const pOne = document.querySelector(DOMstrings.classOne),
@@ -195,7 +211,7 @@ const UIController = ( () => {
             // boxContainer.classList.remove('player-1');
             // boxContainer.classList.remove('player-2');
             // actPlayer === 'Player 1' ? boxContainer.classList.add('player-1') : boxContainer.classList.add('player-2');
-            modalPlayer.innerText = `${objActPlayer.nameCLass === 'player-1' ? 'Player 1' : 'Player 2'}`;
+            modalPlayer.innerText = `${objActPlayer.nameClass === 'player-1' ? 'Player 1' : 'Player 2'}`;
             //3. Clean animal selection
             document.querySelector(DOMstrings.modalMonkey).style.border = ''
             document.querySelector(DOMstrings.modalSquirrel).style.border = '' 
@@ -237,23 +253,29 @@ const controller = ((tictacCtrl, UICtrl) => {
         document.querySelector(DOM.btnReset).addEventListener('click', ctrlResetGame); //Reset-Btn click
     }
     //Game Contaner click
-    let globalScore = []
     const ctrlBoxClick = (e) => { 
+       
         if (gameState === true) {            
             // 1. controlo el box click
-            const boxCliked = tictacCtrl.boxClick(e.target, activePlayer);
+            const boxCliked = tictacCtrl.boxClick(e.target, ctrlActivePlayer);
             // 2. Actulizo el boxUI
-            UICtrl.displayBoxCliked(e.target, activePlayer);
+            UICtrl.displayBoxCliked(e.target, ctrlActivePlayer);
             // 3. Verificar el stado del juego, ganador empate o sigue 
             if (tictacCtrl.checkWinner(activePlayer)) {
-                gameState = tictacCtrl.checkEndGame(false, activePlayer);
+                // 1. finaliza la ronda
+                tictacCtrl.checkEndGame(false, ctrlActivePlayer);
+                // 2. Suma punaje
+                const ctrlScore = tictacCtrl.addScore(ctrlActivePlayer);
+                // 3. Actuliza los UI Score
+                UICtrl.displayScore(ctrlScore);
+                // 4. desactiva el juego
+                gameState = false;
             } 
             else if (tictacCtrl.checkDraw()) {
-                gameState = tictacCtrl.checkEndGame(true);
-                // globalScore = tictacCtrl.addScore(activePlayer);
+                tictacCtrl.checkEndGame(true);
+                gameState = false;
             } else {
-                activePlayer = tictacCtrl.nextPlayer(activePlayer);
-                console.log('activePlayer: ' + activePlayer);
+                activePlayer = tictacCtrl.nextPlayer(ctrlActivePlayer);
             }            
         } 
         // console.log(`score player 1 ${globalScore[0]} and score player 2 ${globalScore[1]}`)
@@ -267,10 +289,7 @@ const controller = ((tictacCtrl, UICtrl) => {
         if (playerSelection === '') {
             alert('Please select an Animal');
         } else {
-            // playerSelection = tictacCtrl.setPlayers(e.target, activePlayer); // return OBJ selectClass, imgSrc
-            // ctrlPlayerOne = playerSelection.playerOne;
-            // ctrlPlayerTwo = playerSelection.playerTwo;
-            activePlayer.selectClass === 'monkey-class' ? activePlayer = 'monkey-class' : activePlayer = 'squirrel-class';
+            // ctrlActivePlayer = tictacCtrl.setPlayers(e.target, ctrlActivePlayer); // return OBJ selectClass, imgSrc
             UICtrl.closeModal();
             gameState = true;
         }
@@ -285,7 +304,7 @@ const controller = ((tictacCtrl, UICtrl) => {
     //Moal-Images click
     const ctrlPlayerAnimal = (e) => {
         // 1. Mirar selecion de Jugador
-        playerSelection = tictacCtrl.setPlayers(e.target, activePlayer); // return OBJ selectClass, imgSrc
+        playerSelection = tictacCtrl.setPlayers(e.target, ctrlActivePlayer); // return OBJ selectClass, imgSrc
         ctrlPlayerOne = playerSelection.playerOne;
         ctrlPlayerTwo = playerSelection.playerTwo;
         ctrlActivePlayer = playerSelection.activePlayer;
