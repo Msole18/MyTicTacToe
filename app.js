@@ -25,7 +25,7 @@ const tictacControler = ( () => {
             nameClass: 'player-1', 
             animalClass: '', 
             imgSrc:'', 
-            score: 0 
+            score: 0
         },
         playerTwo = { 
             nameClass: 'player-2', 
@@ -56,48 +56,15 @@ const tictacControler = ( () => {
             console.log('ramdom es: ' + activePlayer.nameClass);
             return activePlayer;
         },
-        setPlayers:(e, obj) => {
+        setPlayers:(e, obj) => { // set active player animal selection
             if (e.classList.contains('modal-monkey')) {
-                // set player active 
                 activePlayer.animalClass = 'monkey-class';
                 activePlayer.imgSrc = 'monkey.svg';
-                if (obj.nameClass === 'player-1') { // 'player-1'
-                    // set player 1
-                    playerOne.animalClass = 'monkey-class';
-                    playerOne.imgSrc = 'monkey.svg';
-                    //set player 2
-                    playerTwo.animalClass = 'squirrel-class';
-                    playerTwo.imgSrc = 'squirrel.png';
-                    
-                } else { // its modal monkey player 2
-                    // set player 1
-                    playerOne.animalClass = 'squirrel-class';
-                    playerOne.imgSrc = 'squirrel.png';
-                    //set player 2;
-                    playerTwo.animalClass = 'monkey-class';
-                    playerTwo.imgSrc = 'monkey.svg';
-                }                
             } else if (e.classList.contains('modal-squirrel')) {
-                // set player active 
                 activePlayer.animalClass = 'squirrel-class';
                 activePlayer.imgSrc = 'squirrel.png';
-                if (obj.nameClass === 'player-1') { // 'player-1'
-                    // set player 1
-                    playerOne.animalClass = 'squirrel-class';
-                    playerOne.imgSrc = 'squirrel.png';
-                    //set player 2
-                    playerTwo.animalClass = 'monkey-class';
-                    playerTwo.imgSrc = 'monkey.svg';
-                } else {
-                    // set player 1
-                    playerOne.animalClass = 'monkey-class';
-                    playerOne.imgSrc = 'monkey.svg';
-                    //set player 2
-                    playerTwo.animalClass = 'squirrel-class';
-                    playerTwo.imgSrc = 'squirrel.png';
-                }
             }
-            return {playerOne,playerTwo, activePlayer};
+            return activePlayer
         },
         // Get box
         boxClick: (e, obj) => {
@@ -141,9 +108,16 @@ const tictacControler = ( () => {
             return obj;
         },
         addScore: (obj) => {
-            obj.nameClass === 'player-1' ? playerOne.score += 1 : playerTwo.score += 1; 
-            return {playerOne, playerTwo} ;
-        }
+            // obj.nameClass === 'player-1' ? playerOne.score += 1 : playerTwo.score += 1; 
+            // return {playerOne, playerTwo};
+            obj.nameClass === 'player-1' ? obj.score += 1 : obj.score += 1; 
+            return obj;
+        },
+        resetTicTac:(obj) => {
+            Object.assign(playerOne, {animalClass: '', imgSrc: '', score: 0})
+            Object.assign(playerTwo, {animalClass: '', imgSrc: '', score: 0})
+            Object.assign(activePlayer, {nameClass: '', animalClass: '', imgSrc: '', score: 0})
+        }              
 
     }
 })();
@@ -172,16 +146,31 @@ const UIController = ( () => {
     }
 
     return {
-        displayBoxCliked: (e,obj) => {
-            //  e.innerHTML =  obj.animalClass; // Agrega en el HTML el valor del jugador
-            const animalImg = e.lastElementChild.firstElementChild.src = obj.imgSrc
-            e.style.transform =  'rotateY(180deg)';
-        
+        displayClikedBox: (clikedBox,obj) => {
+            //  clikedBox.innerHTML =  obj.animalClass; // Agrega en el HTML el valor del jugador
+            const animalImg = clikedBox.lastElementChild.firstElementChild.src = obj.imgSrc
+            clikedBox.style.transform =  'rotateY(180deg)';
+      
         },
-        displayScore: (obj) => {
-            document.getElementById(obj.playerOne.nameClass).innerHTML = obj.playerOne.score;
-            document.getElementById(obj.playerTwo.nameClass).innerHTML = obj.playerTwo.score;
-            
+        displayScore: (objOne, objTwo) => {
+            document.getElementById(objOne.nameClass).innerHTML = objOne.score;
+            document.getElementById(objTwo.nameClass).innerHTML = objTwo.score; 
+        },
+        displayReset: () => {
+            const cardsDOM = document.querySelectorAll('.card');
+                imgDOM = document.querySelectorAll('.animal-img');
+            for (let card of cardsDOM) {
+                card.classList.remove("monkey-class")
+                card.classList.remove("squirrel-class")
+                card.style.transform =  'none';
+            }
+            setTimeout(() => { // We set a timer to wait the flip effect
+                for (let img of imgDOM) {
+                    img.src = '';
+                }
+            },200);
+            document.getElementById('player-1').innerHTML = 0;
+            document.getElementById('player-2').innerHTML = 0; 
         },
         displayIndex: (actPlayer, playerRoll, gameActive, boxCliked) => {
             const pOne = document.querySelector(DOMstrings.classOne),
@@ -225,12 +214,14 @@ const UIController = ( () => {
             document.querySelector(DOMstrings.modalSquirrel).style.border = '' 
         },
         updateModalAnimal: (obj) => {
+            console.log('updateModalAnimal: '+ obj.animalClass)
             const imgMonkey = document.querySelector(DOMstrings.modalMonkey),
                   imgSquirrel = document.querySelector(DOMstrings.modalSquirrel);
             // 1. Clean a set the Image Border      
             imgMonkey.style.border = '';
             imgSquirrel.style.border = '';      
             obj.animalClass === 'monkey-class' ? imgMonkey.style.border = '2px solid lime' : imgSquirrel.style.border = '2px solid lime';
+
         },
         closeModal: (e) => {
             document.querySelector(DOMstrings.modal).classList.toggle('modal-close');
@@ -246,8 +237,8 @@ const UIController = ( () => {
 
 const controller = ((tictacCtrl, UICtrl) => {
     const DOM = UICtrl.getDOMstrings();
-    let activePlayer, playerSelection, gameState = false;  
-    let ctrlPlayerOne, ctrlPlayerTwo,  ctrlActivePlayer, ctrlboxCliked = true;
+    let ctrlplayerSelection, gameState = false, ctrlboxCliked = true,  
+        ctrlActivePlayer, ctrlPlayerOne, ctrlPlayerTwo;
     // Event listener
     const setupEventListeners = () =>{
         //--- Modal Events----
@@ -275,7 +266,7 @@ const controller = ((tictacCtrl, UICtrl) => {
                     // 2. Suma punaje
                     const ctrlScore = tictacCtrl.addScore(ctrlActivePlayer);
                     // 3. Actuliza los UI Score
-                    UICtrl.displayScore(ctrlScore);
+                    UICtrl.displayScore(ctrlScore.playerOne, ctrlScore.playertwo);
                     // 4. desactiva el juego
                     gameState = false;
                 } 
@@ -292,9 +283,9 @@ const controller = ((tictacCtrl, UICtrl) => {
     const ctrlModalStart = (e) => {
         console.log('Start the Game');
         // 1. Update Game UI
-        UICtrl.displayIndex(activePlayer)
+        UICtrl.displayIndex(ctrlActivePlayer)
         // 2.  Validate the player Roll selection and CLose the Modal
-        if (playerSelection === '') {
+        if (ctrlplayerSelection === '') {
             alert('Please select an Animal');
         } else {
             // ctrlActivePlayer = tictacCtrl.setPlayers(e.target, ctrlActivePlayer); // return OBJ selectClass, imgSrc
@@ -312,10 +303,12 @@ const controller = ((tictacCtrl, UICtrl) => {
     //Moal-Images click
     const ctrlPlayerAnimal = (e) => {
         // 1. Mirar selecion de Jugador
-        playerSelection = tictacCtrl.setPlayers(e.target, ctrlActivePlayer); // return OBJ selectClass, imgSrc
-        ctrlPlayerOne = playerSelection.playerOne;
-        ctrlPlayerTwo = playerSelection.playerTwo;
-        ctrlActivePlayer = playerSelection.activePlayer;
+        // ctrlplayerSelection = tictacCtrl.setPlayers(e.target, ctrlActivePlayer); // return OBJ selectClass, imgSrc
+        // ctrlPlayerOne = ctrlplayerSelection.playerOne;
+        // ctrlPlayerTwo = ctrlplayerSelection.playerTwo;
+        // ctrlActivePlayer = ctrlplayerSelection.activePlayer;
+        ctrlActivePlayer = tictacCtrl.setPlayers(e.target, ctrlActivePlayer); // return OBJ selectClass, imgSrc
+        console.log('ctrlActivePlayer: ' + ctrlActivePlayer.animalClass);
         // 2. Update modal UI
         UICtrl.updateModalAnimal(ctrlActivePlayer); // need send an animal-class
     };
@@ -330,14 +323,19 @@ const controller = ((tictacCtrl, UICtrl) => {
     //Reset-Btn click
     const ctrlResetGame = (e) => {
         console.log('Reset');
+        // controller.init();
         // 1. Reset UI and reset all variables
         controller.init();
+
     };   
 
     return {        
         init: () => { 
             console.log('App has started');
-            activePlayer = '', playerSelection = '', gameActive = false;                               
+            ctrlplayerSelection = '', gameState = false, ctrlboxCliked = true,  
+            ctrlActivePlayer = '', ctrlPlayerOne = '', ctrlPlayerTwo = '';
+            tictacCtrl.resetTicTac(); 
+            UICtrl.displayReset()
             setupEventListeners(); 
             // ctrlStartGame();           
 
