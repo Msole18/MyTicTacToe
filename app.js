@@ -100,10 +100,17 @@ const tictacControler = ( () => {
         },
         // Get box
         boxClick: (e, obj) => {
-            const elementBox = e.classList.add(obj.animalClass);
+            if (e.classList.contains('monkey-class')) {
+                 return false;
+            } else if (e.classList.contains('squirrel-class')) {
+                 return false;
+            } else {
+                e.classList.add(obj.animalClass);
+                return true;     
+            }
         },
         checkWinner:(obj) => {
-            const boxElements = document.querySelectorAll('.box');
+            const boxElements = document.querySelectorAll('.card');
             return winCombination.some(combination => {                
               return combination.every(index => {                
                 return boxElements[index].classList.contains(obj.animalClass);
@@ -111,7 +118,7 @@ const tictacControler = ( () => {
             })
         },
         checkDraw: () =>  {
-            const boxElements = document.querySelectorAll('.box');
+            const boxElements = document.querySelectorAll('.card');
             return [...boxElements].every(box => {
               return box.classList.contains('monkey-class') || box.classList.contains('squirrel-class')
             })
@@ -166,6 +173,7 @@ const UIController = ( () => {
     return {
         displayBoxCliked: (e,obj) => {
             e.innerHTML =  obj.animalClass; // Agrega en el HTML el valor del jugador
+            e.style.transform =  'rotateY(180deg)';
             // if (e.classList.contains('box')) {
     
             // }
@@ -239,7 +247,7 @@ const UIController = ( () => {
 const controller = ((tictacCtrl, UICtrl) => {
     const DOM = UICtrl.getDOMstrings();
     let activePlayer, playerSelection, gameState = false;  
-    let ctrlPlayerOne, ctrlPlayerTwo,  ctrlActivePlayer;
+    let ctrlPlayerOne, ctrlPlayerTwo,  ctrlActivePlayer, ctrlboxCliked = true;
     // Event listener
     const setupEventListeners = () =>{
         //--- Modal Events----
@@ -254,31 +262,36 @@ const controller = ((tictacCtrl, UICtrl) => {
     }
     //Game Contaner click
     const ctrlBoxClick = (e) => { 
-       
-        if (gameState === true) {            
+        if (gameState === true ) {            
             // 1. controlo el box click
-            const boxCliked = tictacCtrl.boxClick(e.target, ctrlActivePlayer);
-            // 2. Actulizo el boxUI
-            UICtrl.displayBoxCliked(e.target, ctrlActivePlayer);
-            // 3. Verificar el stado del juego, ganador empate o sigue 
-            if (tictacCtrl.checkWinner(activePlayer)) {
-                // 1. finaliza la ronda
-                tictacCtrl.checkEndGame(false, ctrlActivePlayer);
-                // 2. Suma punaje
-                const ctrlScore = tictacCtrl.addScore(ctrlActivePlayer);
-                // 3. Actuliza los UI Score
-                UICtrl.displayScore(ctrlScore);
-                // 4. desactiva el juego
-                gameState = false;
+            console.log("============= Click ========== ");
+            ctrlboxCliked = tictacCtrl.boxClick(e.target, ctrlActivePlayer);
+            
+            console.log("ctrlboxCliked " + ctrlActivePlayer)
+            if (ctrlboxCliked){
+                // 2. Actulizo el boxUI
+                UICtrl.displayBoxCliked(e.target, ctrlActivePlayer);
+                // 3. Verificar el stado del juego, ganador empate o sigue 
+                if (tictacCtrl.checkWinner(ctrlActivePlayer)) {
+                    // 1. finaliza la ronda
+                    tictacCtrl.checkEndGame(false, ctrlActivePlayer);
+                    // 2. Suma punaje
+                    const ctrlScore = tictacCtrl.addScore(ctrlActivePlayer);
+                    // 3. Actuliza los UI Score
+                    UICtrl.displayScore(ctrlScore);
+                    // 4. desactiva el juego
+                    gameState = false;
+                } 
+                else if (tictacCtrl.checkDraw()) {
+                    tictacCtrl.checkEndGame(true);
+                    gameState = false;
+                } else {
+                    ctrlActivePlayer = tictacCtrl.nextPlayer(ctrlActivePlayer);
+                    console.log("nextPlayer " + ctrlActivePlayer.animalClass)
+                }            
             } 
-            else if (tictacCtrl.checkDraw()) {
-                tictacCtrl.checkEndGame(true);
-                gameState = false;
-            } else {
-                activePlayer = tictacCtrl.nextPlayer(ctrlActivePlayer);
-            }            
+            // ctrlboxCliked = true;
         } 
-        // console.log(`score player 1 ${globalScore[0]} and score player 2 ${globalScore[1]}`)
     };
     //Btn-ModalStart cick
     const ctrlModalStart = (e) => {
