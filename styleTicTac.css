@@ -144,7 +144,6 @@ span {
 }
 
 /* ------------Headerr--------------- */
-
 .title {
     position: relative;
     margin: 5px auto;
@@ -168,57 +167,7 @@ span {
     background-image: linear-gradient(to top left, #f1eff1 0%, #dddada 100%);
     border: 3px solid black;
     position: relative;
-    /* background: red; */
 }
-/* -----------Card Flip-------------- */
-.card{
-    background-image: linear-gradient(to top left, #f1eff1 0%, #dddada 100%);
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    transform-style: preserve-3d;
-    transition: all 0.5s ease;
-    /* background: chartreuse; */
-}
-/* .card:hover{
-    transform: rotateY(180deg);
-} */
-.front {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    backface-visibility: hidden;
-    background: blue;
-    color:#333;
-    transform: rotateY(180deg);
-}
-.back {
-    /* background: blue; */
-    background-image: linear-gradient(to top left, #f1eff1 0%, #dddada 100%);
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    backface-visibility: hidden;
-    color:#333;
-    transform: rotateY(180deg);
-}
-.box > img {
-    position: absolute;
-    width: 90%;
-    height: 90%;
-    justify-content: center;
-    align-items: center;
-    border: 2px solid blue; 
-    margin: 5%;
-    /* visibility: hidden; */
-}
-
-.box > img  {
-    width: 90%;
-    height: 90%;
-    border: 2px solid blue;  
-  
-} 
 .box:nth-child(1),
 .box:nth-child(2),
 .box:nth-child(3) {
@@ -239,6 +188,42 @@ span {
 .box:nth-child(9) {
     border-bottom: none;
 }
+/* -----------Card Flip-------------- */
+.card{
+    background-image: linear-gradient(to top left, #f1eff1 0%, #dddada 100%);
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    transform-style: preserve-3d;
+    transition: all 0.5s ease;
+    /* background: chartreuse; */
+}
+.front {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    color:#333;
+    transform: rotateY(180deg);
+}
+.back {
+    background-image: linear-gradient(to top left, #f1eff1 0%, #dddada 100%);
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    color:#333;
+    transform: rotateY(180deg);
+}
+.animal-img {
+    position: absolute;
+    width: 90%;
+    height: 90%;
+    justify-content: center;
+    align-items: center;
+    margin: 7%;
+}
+
 
 
 
@@ -378,3 +363,4 @@ span {
     top: 55%;
     margin-bottom:  4px;
 }
+

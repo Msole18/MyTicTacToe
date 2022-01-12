@@ -6,10 +6,11 @@ let pruebaGlobal = 'hello';
 //     - addScore: de momento lo uso, no me queda claro si es necesario o se puede hacer en el endGame.
 
 // User Interface
-//     1.- falta colocar los flit card effect pero ya sabes hacerlo pero se borro.
-//     2.- falta si o si controlar ahora que se cargue la imgSrc de cada box.
 //     3.- hacer el display de los mensajes de Winner o Draw.
 //     4.- hace falta refrescar la UI despues de terminada alguna ronda
+//     5.- hacer control de todos los botones
+//     5.- ver el funcionamiento de los label y posiblemene buscar otros stickesy paleta de color
+
 
 // Cuando termines eso, mira las siguientes ideas
 //     - dependiendo de como muestres el mensaje Winner o Draw. ver que hacer con los botones de Next Round
@@ -172,11 +173,10 @@ const UIController = ( () => {
 
     return {
         displayBoxCliked: (e,obj) => {
-            e.innerHTML =  obj.animalClass; // Agrega en el HTML el valor del jugador
+            //  e.innerHTML =  obj.animalClass; // Agrega en el HTML el valor del jugador
+            const animalImg = e.lastElementChild.firstElementChild.src = obj.imgSrc
             e.style.transform =  'rotateY(180deg)';
-            // if (e.classList.contains('box')) {
-    
-            // }
+        
         },
         displayScore: (obj) => {
             document.getElementById(obj.playerOne.nameClass).innerHTML = obj.playerOne.score;
@@ -264,10 +264,7 @@ const controller = ((tictacCtrl, UICtrl) => {
     const ctrlBoxClick = (e) => { 
         if (gameState === true ) {            
             // 1. controlo el box click
-            console.log("============= Click ========== ");
             ctrlboxCliked = tictacCtrl.boxClick(e.target, ctrlActivePlayer);
-            
-            console.log("ctrlboxCliked " + ctrlActivePlayer)
             if (ctrlboxCliked){
                 // 2. Actulizo el boxUI
                 UICtrl.displayBoxCliked(e.target, ctrlActivePlayer);
@@ -287,10 +284,8 @@ const controller = ((tictacCtrl, UICtrl) => {
                     gameState = false;
                 } else {
                     ctrlActivePlayer = tictacCtrl.nextPlayer(ctrlActivePlayer);
-                    console.log("nextPlayer " + ctrlActivePlayer.animalClass)
                 }            
             } 
-            // ctrlboxCliked = true;
         } 
     };
     //Btn-ModalStart cick
