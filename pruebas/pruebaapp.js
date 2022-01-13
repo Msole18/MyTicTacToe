@@ -120,7 +120,7 @@ const tictacControler = ( () => {
 
 const UIController = ( () => {
     const DOMstrings = {
-        gameContainer: '.game-container',
+        gameContainer: '.boxes-container',
         modalContainer: '.modal-container',
         btnModalClose: '.close',
         btnModalStart: '.btn-modal',
