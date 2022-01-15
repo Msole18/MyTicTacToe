@@ -41,14 +41,19 @@ const tictacControler = ( () => {
     return {
         // Ramdon player go first
         ramdomPlayer: () => {
-            // let actPlayer = (Math.random() >= 0.5) 
-            // actPlayer >= 0.5 ? actPlayer = 'Player 1' : actPlayer = 'Player 2';
-            // console.log('ramdom es: ' + actPlayer);
-            // return actPlayer;
             let actPlayer = (Math.random() >= 0.5);
             if (actPlayer >= 0.5) {
+                const domPlayerOne = document.querySelectorAll('.player-1');               
+                for (let act of domPlayerOne){
+                    act.classList.add('active-player');
+                }
                 activePlayer.nameClass = playerOne.nameClass; // 'player-1'
+
             } else {
+                const domPlayerTwo = document.querySelectorAll('.player-2');               
+                for (let act of domPlayerTwo){
+                    act.classList.add('active-player');
+                }
                 activePlayer.nameClass = playerTwo.nameClass; // 'player-2'
             }
             console.log('ramdom es: ' + activePlayer.nameClass);
@@ -99,13 +104,21 @@ const tictacControler = ( () => {
             
         },
         nextPlayer: (obj) => {
+            const domActPlayer = document.querySelectorAll('.active-player'),
+                  domPlayerOne = document.querySelectorAll('.player-1'),
+                  domPlayerTwo = document.querySelectorAll('.player-2');
             obj.animalClass === 'monkey-class' ? obj.animalClass = 'squirrel-class' : obj.animalClass = 'monkey-class';
             obj.imgSrc === 'monkey.svg' ? obj.imgSrc = 'squirrel.png' : obj.imgSrc = 'monkey.svg';
+            for (let playerOne of domPlayerOne) { // player-1
+                playerOne.classList.toggle('active-player')
+            }
+            for (let playerTwo of domPlayerTwo) { // player-2
+                playerTwo.classList.toggle('active-player')
+            }
+            
             return obj;
         },
         addScore: (obj) => {
-            // obj.nameClass === 'player-1' ? playerOne.score += 1 : playerTwo.score += 1; 
-            // return {playerOne, playerTwo};
             obj.nameClass === 'player-1' ? obj.score += 1 : obj.score += 1; 
             return obj;
         },
@@ -122,14 +135,14 @@ const UIController = ( () => {
     const DOMstrings = {
         gameContainer: '.boxes-container',
         modalContainer: '.modal-container',
-        btnModalClose: '.close',
-        btnModalStart: '.btn-modal',
+        btnModalClose: '.btn-close-modal',
+        btnModalStart: '.btn-start-modal',
         btnNewGame: '.btn-new-game',
         btnNext: '.btn-next',
         btnReset: '.btn-reset',
-        classOne:'.player-1',
-        classTwo: '.player-2',
-        playerActive: 'player-active',
+        playerOne:'.player-1',
+        playerTwo: '.player-2',
+        activePlayer: '.active-player',
         modal: '.modal',
         modalMsg: '.modal-msg',
         modalFirst: '.first-player',
@@ -142,17 +155,54 @@ const UIController = ( () => {
     }
 
     return {
-        displayBoxCliked: (clikedBox,obj) => {
-            //  clikedBox.innerHTML =  obj.animalClass; // Agrega en el HTML el valor del jugador
-            const animalImg = clikedBox.lastElementChild.firstElementChild.src = obj.imgSrc
-            clikedBox.style.transform =  'rotateY(180deg)';
+        displayBoxCliked: (clikedBox,obj) => { 
+            // 1. Click Box
+            clikedBox.lastElementChild.firstElementChild.src = obj.imgSrc
+            clikedBox.style.transform = 'rotateY(180deg)';
         },
-        displayScore: (objOne) => {
-        // displayScore: (objOne, objTwo) => {
-            console.log(`objOne: ${objOne.score}`) //, objTwo: ${objTwo.score}`)
-            document.getElementById(objOne.nameClass).innerHTML = objOne.score;
-            // document.getElementById(objTwo.nameClass).innerHTML = objTwo.score; 
+        displayTurn: (obj) => {
+            const domActPlayer = document.querySelectorAll(DOMstrings.activePlayer),
+                  domPlayerOne = document.querySelectorAll(DOMstrings.playerOne),
+                  domPlayerTwo = document.querySelectorAll(DOMstrings.playerTwo);
+            // 2. Active Player Panels
+            // setTimeout(() => { 
+                for (let playerOne of domPlayerOne) { // player-1
+                    if (playerOne.classList.contains('active-turn')) playerOne.innerText = '';
+                    if (playerOne.classList.contains('active-img')) {
+                        playerOne.src = ''; 
+                        playerOne.style.visibility = 'hidden';
+                    }
+                };
+                for (let playerTwo of domPlayerTwo) { // player-2
+                    if (playerTwo.classList.contains('active-turn')) playerTwo.innerText = '';
+                    if (playerTwo.classList.contains('active-img')) {
+                        playerTwo.src = ''; 
+                        playerTwo.style.visibility = 'hidden';
+                    }
+                };
+                for (let actPlayer of domActPlayer) { // active-player
+                    if (actPlayer.classList.contains('active-turn')) actPlayer.innerText = 'Your turn!';
+                    if (actPlayer.classList.contains('active-img')) {
+                        actPlayer.src = obj.imgSrc;
+                        actPlayer.style.visibility = 'visible';
+                    } 
+                };
+            // },950);
         },
+        displayScore: (obj) => {
+             document.getElementById(obj.nameClass).innerHTML = obj.score;
+        },
+        displayEndMsg: (obj) => {
+            const modalContainer = document.querySelector(DOMstrings.modalContainer),
+                      modal = document.querySelector(DOMstrings.modal),
+                      modalPlayer = document.querySelector(DOMstrings.modalFirst);
+    
+            //1. Open Modal windows
+            modalContainer.style.opacity = 1;
+            modalContainer.style.visibility = 'visible';
+            modal.classList.toggle('modal-close');
+                
+       },
         displayReset: () => {
             const cardsDOM = document.querySelectorAll('.card');
                 imgDOM = document.querySelectorAll('.animal-img');
@@ -191,20 +241,17 @@ const UIController = ( () => {
                 bNext.disabled = true;
             }
         },
-        //------------MODAL--------------
+        // ==================== MODAL ==================== 
         displayModal: (objActPlayer) => {
-            const moContainer = document.querySelector(DOMstrings.modalContainer),
+            const modalContainer = document.querySelector(DOMstrings.modalContainer),
                   modal = document.querySelector(DOMstrings.modal),
-                  modalPlayer = document.querySelector(DOMstrings.modalFirst),
-                  boxContainer = document.querySelector(DOMstrings.gameContainer);
+                  modalPlayer = document.querySelector(DOMstrings.modalFirst);
+
             //1. Open Modal windows
-            moContainer.style.opacity = 1;
-            moContainer.style.visibility = 'visible';
+            modalContainer.style.opacity = 1;
+            modalContainer.style.visibility = 'visible';
             modal.classList.toggle('modal-close');
-            //2. Show the Active Player 
-            // boxContainer.classList.remove('player-1');
-            // boxContainer.classList.remove('player-2');
-            // actPlayer === 'Player 1' ? boxContainer.classList.add('player-1') : boxContainer.classList.add('player-2');
+            //2. Show the Active Player
             modalPlayer.innerText = `${objActPlayer.nameClass === 'player-1' ? 'Player 1' : 'Player 2'}`;
             //3. Clean animal selection
             document.querySelector(DOMstrings.modalMonkey).style.border = ''
@@ -213,20 +260,25 @@ const UIController = ( () => {
         updateModalAnimal: (obj) => {
             const imgMonkey = document.querySelector(DOMstrings.modalMonkey),
                   imgSquirrel = document.querySelector(DOMstrings.modalSquirrel);
+        
             // 1. Clean a set the Image Border      
             imgMonkey.style.border = '';
             imgSquirrel.style.border = '';      
             obj.animalClass === 'monkey-class' ? imgMonkey.style.border = '2px solid lime' : imgSquirrel.style.border = '2px solid lime';
 
         },
-        closeModal: (e) => {
-            document.querySelector(DOMstrings.modal).classList.toggle('modal-close');
+        closeModal: (obj) => {
+            const domModalContainer = document.querySelector(DOMstrings.modalContainer),
+                  domModal = document.querySelector(DOMstrings.modal),
+                  domActPlayer = document.querySelectorAll(DOMstrings.activePlayer);
+
+            domModal.classList.toggle('modal-close');
             setTimeout(() => { // We set a timer to wait the transition effect
-                document.querySelector(DOMstrings.modalContainer).style.opacity = 0;
-                document.querySelector(DOMstrings.modalContainer).style.visibility = 'hidden';
-            },900);
+                domModalContainer.style.opacity = 0;
+                domModalContainer.style.visibility = 'hidden';
+            },900);            
         },
-        // ------- DOM Strings
+        // ==================== DOM Strings ====================
         getDOMstrings:() => DOMstrings
     };    
 })();
@@ -251,6 +303,7 @@ const controller = ((tictacCtrl, UICtrl) => {
     const ctrlBoxClick = (e) => { 
         if (gameState === true ) {            
             // 1. controlo el box click
+            
             ctrlboxCliked = tictacCtrl.boxClick(e.target, ctrlActivePlayer);
             if (ctrlboxCliked){
                 // 2. Actulizo el boxUI
@@ -272,6 +325,7 @@ const controller = ((tictacCtrl, UICtrl) => {
                     gameState = false;
                 } else {
                     ctrlActivePlayer = tictacCtrl.nextPlayer(ctrlActivePlayer);
+                    UICtrl.displayTurn(ctrlActivePlayer);
                 }            
             } 
         } 
@@ -280,13 +334,14 @@ const controller = ((tictacCtrl, UICtrl) => {
     const ctrlModalStart = (e) => {
         console.log('Start the Game');
         // 1. Update Game UI
-        UICtrl.displayIndex(ctrlActivePlayer)
+        // UICtrl.displayIndex(ctrlActivePlayer);
         // 2.  Validate the player Roll selection and CLose the Modal
         if (ctrlActivePlayer.animalClass === '') {
             alert('Please select an Animal');
         } else {
             // ctrlActivePlayer = tictacCtrl.setPlayers(e.target, ctrlActivePlayer); // return OBJ selectClass, imgSrc
-            UICtrl.closeModal();
+            UICtrl.closeModal(ctrlActivePlayer);
+            UICtrl.displayTurn(ctrlActivePlayer);
             gameState = true;
         }
     };
@@ -329,8 +384,9 @@ const controller = ((tictacCtrl, UICtrl) => {
             tictacCtrl.resetTicTac(); 
             UICtrl.displayReset()
             setupEventListeners(); 
-            // ctrlStartGame();           
 
+            // ctrlStartGame();           
+            UICtrl.displayModal(ctrlActivePlayer); 
         }
     };
 
