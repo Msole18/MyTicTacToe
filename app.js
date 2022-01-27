@@ -26,7 +26,6 @@ const tictacControler = ( () => {
                 domPlayerTwo.forEach( dom => dom.classList.add('active-player'));
                 data.activePlayer.nameClass = 'player-2';  
             }
-            prinTest('ramdom es: ' + data.activePlayer.nameClass);
             return data;
         },
         setPlayers:(e, obj) => { // set active player animal selection
@@ -305,7 +304,6 @@ const controller = ((tictacCtrl, UICtrl) => {
     }
     //Btn-Next Round click
     const ctrlNextRound = (e) => {
-        prinTest('Next round');
         // 1. Select a random Player to plat first
         UICtrl.displayReset(false)
         // 2. Close the modal UI                     
@@ -344,7 +342,6 @@ const controller = ((tictacCtrl, UICtrl) => {
     };
     //Btn-New Game click
     const ctrlNewGame = (e) => {
-        prinTest('New Game');
         // 1. Select a random Player to plat first
         activePlayer = tictacCtrl.randomPlayer();
         // 2. Display the Modal        
@@ -352,7 +349,6 @@ const controller = ((tictacCtrl, UICtrl) => {
     };   
     //Btn-Start click
     const ctrlStart = (e) => {
-        prinTest('Start the Game');
         // 1. Check if the active player selected an animal 
         if (activePlayer.activePlayer.animalClass === "") return alert('Please select an Animal');
         // 3. Activate de game state
@@ -371,7 +367,6 @@ const controller = ((tictacCtrl, UICtrl) => {
     };
     //Btn-Reset click
     const ctrlResetGame = (e) => {
-        prinTest('Reset');
         // 1. Reset UI and reset all variables
         controller.init();
     }; 
@@ -385,7 +380,6 @@ const controller = ((tictacCtrl, UICtrl) => {
 
     return {        
         init: () => { 
-            prinTest('App has started');
             ctrlplayerSelection = '', gameState = false, ctrlboxCliked = true,  
             activePlayer = '', ctrlPlayerOne = '', ctrlPlayerTwo = '';
             tictacCtrl.resetTicTac(); 
