@@ -1,145 +1,208 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Kanit:ital,wght@1,900&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:100,300,400,600" rel="stylesheet" type="text/css">
-    <link rel="stylesheet" href="styleTicTac.css" />
-    <title>My Tic Tac Toe</title>
-  </head>
-  <body>
+    <link rel="stylesheet" href="styles.css" />
+    <title>Pruebas</title>
+</head>
+<body>
+  
+    <header class="title-container ">
+        <h1 class="title">My Tic Tac Toe</h1>
+    </header>
+    <!-- ========== TIC TAC TOE ========== -->
     <main>
-      <!-- MODAL -->
-      <div class="modal-container">
-        <div class="modal modal-close">
-          <p class="close">X</p>
+        <!-- ========== PLAYER 1 PANEL ========== -->
+        <div class="player-1 player-container">
+            <p class="player-1 active-turn"></p>
+            <img class="player-1 active-img" src="" alt="">
+            <div class="player">
+                <p class="player-label">Player 1</p>
+                <p class="player-score" id="player-1">0</p>
+            </div>
+        </div>
+        <!-- ========== GAME PANEL ========== -->
+        <section class="center-container">
+            <div class="game-container">
+                <div class="boxes-container">
+                <!-- box 1 -->
+                  <div class="box">
+                    <div class="card" id="card">
+                      <div class="front"></div>
+                      <div class="back">
+                        <img class="animal-img" src="" alt="">
+                      </div>
+                    </div>
+                  </div> 
+                  <!-- box 2 -->
+                  <div class="box">
+                    <div class="card" id="card">
+                      <div class="front"></div>
+                      <div class="back">
+                        <img class="animal-img" src="" alt="">
+                      </div>
+                    </div>
+                  </div>  
+                  <!-- box 3 -->
+                  <div class="box">
+                    <div class="card">
+                      <div class="front"></div>
+                      <div class="back">
+                        <img class="animal-img" src="" alt="">
+                      </div>
+                    </div>
+                  </div>  
+                  <!-- box 4 -->
+                  <div class="box">
+                    <div class="card">
+                      <div class="front"></div>
+                      <div class="back">
+                        <img class="animal-img" src="" alt="">
+                      </div>
+                    </div>
+                  </div>  
+                  <!-- box 5 -->
+                  <div class="box">
+                    <div class="card">
+                      <div class="front"></div>
+                      <div class="back">
+                        <img class="animal-img" src="" alt="">
+                      </div>
+                    </div>
+                  </div> 
+                  <!-- box 6 -->
+                  <div class="box">
+                    <div class="card">
+                      <div class="front"></div>
+                      <div class="back">
+                        <img class="animal-img" src="" alt="">
+                      </div>
+                    </div>
+                  </div>  
+                  <!-- box 7 -->
+                  <div class="box">
+                    <div class="card">
+                      <div class="front"></div>
+                      <div class="back">
+                        <img class="animal-img" src="" alt="">
+                      </div>
+                    </div>
+                  </div>  
+                  <!-- box 8 -->
+                  <div class="box">
+                    <div class="card">
+                      <div class="front"></div>
+                      <div class="back">
+                        <img class="animal-img" src="" alt="">
+                      </div>
+                    </div>
+                  </div>  
+                  <!-- box 9 -->
+                  <div class="box">
+                    <div class="card">
+                      <div class="front"></div>
+                      <div class="back">
+                        <img class="animal-img" src="" alt="">
+                      </div>
+                    </div>
+                  </div>         
+                </div>
+            </div>
+            <!-- ========== BUTTONS PANEL ========== -->  
+            <section class="input-container">
+                <div class="btn-container">
+                    <button class="btn btn-new-game">New game</button>
+                    <button class="btn btn-reset">Reset</button>
+                  </div>
+            </section>
+        </section>
+        <!-- ========== PLAYER 2 PANEL ========== -->
+        <section class="player-2 player-container">
+            <p class="player-2 active-turn"></p>
+            <img class="player-2 active-img"  src="" alt="">
+            <div class="player">
+                <p class="player-label">Player 2</p>
+                <p class="player-score" id="player-2">0</p>
+            </div>
+        </section>
+    </main>
+    <!-- ========== MODALS PANEL ========== -->
+    <div class="modal-container">
+        <div class="modal modal-close" id="modal">
+          <p class="btn btn-close-modal">X</p>
           <div class="modal-title">
-            <h1>My Tic Tac Toe</h1>
+            <h1 class="first-player"></h1>
           </div>
-          <div class="modal-text"> 
+          <div class="modal-text" id="modal-text"> 
+          <!-- <div class="modal-text" id="end-msg"> -->
             <div class="modal-msg">
-              <p><span class="first-player"></span><br>you go first, so tell us...</p>
-              <h2>Are you a Monkey or a Squirrel??</h2>
+              <p>you go first, so tell us...</p>
+              <h2 class="first-player">Are you a Monkey or a Squirrel??</h2>
             </div>
             <div class="modal-img">
               <img class="modal-monkey" src="monkey.svg" alt="">
               <img class="modal-squirrel" src="squirrel.png" alt="">
+              <p>Please select one to play.</p>
             </div>
-            <p>Please select one to play.</p>
-            <button class="btn btn-modal">Start</button>
+            <div class='modal-btn'>
+              <div class="btn-container">
+                  <button class="btn btn-start-modal" id="btn-modal">Start</button>
+              </div>
+            </div>  
           </div>
         </div>
       </div>
-      <main class="container">      
-        <header class="title-container">
-          <h1 class="title">My Tic Tac Toe</h1>
-        </header>
-        <!-- Game Section -->
-        <section>
-          <div class="game-container">
-            <!-- box 1 -->
-            <div class="box">
-              <div class="card" id="card">
-                <div class="front"></div>
-                <div class="back">
-                  <img class="animal-img" src="" alt="">
+      <!-- ========== MODALS WINNER ========== -->
+      <div class="winner-container">
+        <div class="winner-modal modal-close" id="modal">
+          <div class="modal-text" id="end-msg"> 
+            <div class="end-title">
+                <h2 class="first-player" id="winner-player"></h2>
+            </div>        
+            <div class="end-img">
+                <img class="winner-img" src="" alt="">
+            </div>
+            <div class="end-msg">
+                <h1 class="first-player">Wins</h1>
+            </div>          
+            <div class='end-btn'>
+                <div class="btn-container">
+                    <button class="btn btn-next-winner">Next Round</button>
                 </div>
-              </div>
-            </div> 
-            <!-- box 2 -->
-            <div class="box">
-              <div class="card" id="card">
-                <div class="front"></div>
-                <div class="back">
-                  <img class="animal-img" src="" alt="">
-                </div>
-              </div>
-            </div>  
-            <!-- box 3 -->
-            <div class="box">
-              <div class="card">
-                <div class="front"></div>
-                <div class="back">
-                  <img class="animal-img" src="" alt="">
-                </div>
-              </div>
-            </div>  
-            <!-- box 4 -->
-            <div class="box">
-              <div class="card">
-                <div class="front"></div>
-                <div class="back">
-                  <img class="animal-img" src="" alt="">
-                </div>
-              </div>
-            </div>  
-            <!-- box 5 -->
-            <div class="box">
-              <div class="card">
-                <div class="front"></div>
-                <div class="back">
-                  <img class="animal-img" src="" alt="">
-                </div>
-              </div>
-            </div> 
-            <!-- box 6 -->
-            <div class="box">
-              <div class="card">
-                <div class="front"></div>
-                <div class="back">
-                  <img class="animal-img" src="" alt="">
-                </div>
-              </div>
-            </div>  
-            <!-- box 7 -->
-            <div class="box">
-              <div class="card">
-                <div class="front"></div>
-                <div class="back">
-                  <img class="animal-img" src="" alt="">
-                </div>
-              </div>
-            </div>  
-            <!-- box 8 -->
-            <div class="box">
-              <div class="card">
-                <div class="front"></div>
-                <div class="back">
-                  <img class="animal-img" src="" alt="">
-                </div>
-              </div>
-            </div>  
-            <!-- box 9 -->
-            <div class="box">
-              <div class="card">
-                <div class="front"></div>
-                <div class="back">
-                  <img class="animal-img" src="" alt="">
-                </div>
-              </div>
-            </div>         
+            </div>
           </div>
-        </section>
-        <!-- GAME CONTROL -->
-        <section class="game-control">
-          <div class="player-1 ctrl-container">
-            <p class="player-label">Player 1</p>
-            <p class="player-score" id="player-1">0</p>
+        </div>
+      </div>
+      <!-- ========== MODALS DRAW ========== -->
+      <div class="draw-container">
+        <div class="draw-modal modal-close" id="modal">
+          <div class="modal-text" id="end-msg"> 
+            <div class="end-title">
+              <h2 class="first-player">Draw!!</h3>
+            </div>
+            <div class="end-msg">
+              <h1 class="first-player">No one Wins</h1>
+            </div>
+            <div class="draw-img">
+              <img class="modal-monkey " src="monkey.svg" alt="">
+              <img class="modal-squirrel" src="squirrel.png" alt="">
+            </div>
+            <div class='end-btn'>
+              <div class="btn-container">
+                <button class="btn btn-next-draw">Next Round</button>
+              </div>
+            </div>
           </div>
-          <div class=" ctrl-container input-container">
-            <button class="btn btn-new-game">New game</button>
-            <button class="btn btn-next">Next Round</button>
-            <button class="btn btn-reset">Reset</button>
-          </div>
-          <div class="player-2 ctrl-container">
-            <p class="player-label">Player 2</p>
-            <p class="player-score" id="player-2">0</p>
-          </div>
-        </section>
-    </main>
-    <script src="app.js"></script>
-  </body>
+        </div>
+      </div>
+      
+
+    <!-- ========== SCRIPT ========== -->  
+    <script src="app.js"></script>    
+</body>
 </html>

@@ -8,13 +8,12 @@ body {
     /* overflow: hidden; */
     position: relative;
     font-family: 'Kanit', sans-serif;
-    color: black;
-    
+    color: black;    
     position: relative; 
     height: 100vh;
     width: 60%;
     margin: 0 auto;
-    /* border: 2px solid #db0adbcc; */
+    
 }
 header {   
     /*border: 2px solid blue; */
@@ -277,21 +276,16 @@ main {
     transition: transform 1s;
     transform: translateY(0%);
     border-radius: 10px;
-    /* border: 2px solid black;  */
-}
-.modal-close {
-    transform: translateY(-200%);
-    /* border: 2px solid blue;  */
 }
 .modal-title {
     font-family: 'Kanit', sans-serif;
     font-size: 25px;
     text-align: center;
     height: 20%;
-    border: 2px solid blue; 
+    /* border: 2px solid blue;  */
 }
 .modal-text {
-    border: 2px solid red;
+    /* border: 2px solid red; */
     font-family: Open Sans;
     font-weight: 600;
     height: 80%;
@@ -301,7 +295,7 @@ main {
 }
 .modal-msg{
     height: 20%;
-    border: 2px solid blue; 
+    /* border: 2px solid blue;  */
 }
 .first-player {
     font-family: 'Kanit', sans-serif;
@@ -310,7 +304,7 @@ main {
     /* border: 2px solid blue;  */
 }
 .modal-img {
-    border: 2px solid rgb(223, 19, 206); 
+    /* border: 2px solid rgb(223, 19, 206);  */
     height: 55%;
     width: 60%;
     margin: 0px auto;
@@ -324,8 +318,8 @@ main {
 }
 .modal-img :nth-child(3) { 
     grid-column: 1 / spam 2; 
-    border: 2px solid green;}
-
+    /* border: 2px solid green; */
+}
 .modal-img :nth-child(1),
 .modal-img :nth-child(2) {
     height: 70%;
@@ -346,9 +340,8 @@ main {
     border-radius: 10px;
     cursor: pointer; 
 }
-
 .modal-btn {
-    border: 2px solid green;
+    /* border: 2px solid green; */
     height: 20%;
     width: 40%;
     margin: 10px auto;     
@@ -365,8 +358,32 @@ main {
     align-self: center; 
     justify-content: center; 
 }  
-
-/* <!-- ========== END MESSAGE MODAL ========== --> */
+/* <!-- ========== WINNER MESSAGE MODAL ========== --> */
+.winner-container {
+    opacity: 0;
+    visibility: hidden;
+    position: fixed;
+    z-index: 1000;
+    width: 100%;
+    height: 100vh;
+    top:0;
+    left: 0;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.winner-modal {
+    background-image: linear-gradient(to top left, #f1eff1 0%, #dddada 100%);
+    width: 35%;
+    height: 60%;
+    text-align: center;
+    position: relative;
+    transition: transform 1s;
+    transform: translateY(0%);
+    border-radius: 10px;
+    /* border: 2px solid black;  */
+}
 #end-msg {
     /* border: 2px solid red; */
     height: 100%;
@@ -396,10 +413,36 @@ main {
     height: 40%;
     margin: 0px auto;
 }
-.win-img {
+.winner-img {
     border: 2px solid #ff0846b2;
     border-radius: 10px;
     height: 100%;
+}
+/* <!-- ========== DRAW MESSAGE MODAL ========== --> */
+.draw-container {
+    opacity: 0;
+    visibility: hidden;
+    position: fixed;
+    z-index: 1000;
+    width: 100%;
+    height: 100vh;
+    top:0;
+    left: 0;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.draw-modal {
+    background-image: linear-gradient(to top left, #f1eff1 0%, #dddada 100%);
+    width: 35%;
+    height: 60%;
+    text-align: center;
+    position: relative;
+    transition: transform 1s;
+    transform: translateY(0%);
+    border-radius: 10px;
+    /* border: 2px solid black;  */
 }
 .draw-img {
     /* border: 2px solid rgb(223, 19, 206);  */
@@ -446,3 +489,17 @@ main {
     align-self: center; 
     justify-content: center; 
 } 
+.modal-close {
+    transform: translateY(-200%);
+}
+
+@media (orientation:portrait) {
+    header {
+        width: auto;
+    }
+    main {
+        width: 20%;
+    }
+    
+}
+
