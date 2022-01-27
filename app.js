@@ -30,7 +30,7 @@ const tictacControler = ( () => {
                 domPlayerTwo.forEach( dom => dom.classList.add('active-player'));
                 data.activePlayer.nameClass = 'player-2';  
             }
-            console.log('ramdom es: ' + data.activePlayer.nameClass);
+            prinTest('ramdom es: ' + data.activePlayer.nameClass);
             return data;
         },
         setPlayers:(e, obj) => { // set active player animal selection
@@ -117,8 +117,10 @@ const UIController = ( () => {
         drawModal: '.draw-modal',
         winnerContainer: '.winner-container',
         winnerModal: '.winner-modal',
-        winnerPlayer: 'winner-player',
-        winnerImg: '.winner-img'       
+        winnerImg: '.winner-img', 
+        playerOneID:'player-1',
+        playerTwoID: 'player-2',
+        winnerPlayerID: 'winner-player'      
     }
 
     return {
@@ -163,15 +165,15 @@ const UIController = ( () => {
                   
             // 1. Reset the game boxes      
             domCard.forEach( dom => {
-                dom.classList.remove("monkey-class")
-                dom.classList.remove("squirrel-class")
+                dom.classList.remove('monkey-class')
+                dom.classList.remove('squirrel-class')
                 dom.style.transform =  'none';
             });
             setTimeout(() => domAnimalImg.forEach( dom => dom.src = ''), 200);
             // 2. Reset score labels
             if(reset) {
-                document.getElementById('player-1').innerHTML = 0;
-                document.getElementById('player-2').innerHTML = 0; 
+                document.getElementById(DOMstrings.playerOneID).innerHTML = 0;
+                document.getElementById(DOMstrings.playerTwoID).innerHTML = 0; 
                 // Swap buttons (Reset >> New Game)
                 domActTurn.textContent = '';
                 domActImg.style.visibility = 'hidden';
@@ -195,7 +197,8 @@ const UIController = ( () => {
             const domWinnerContainer = document.querySelector(DOMstrings.winnerContainer),
                   domWinnerModal = document.querySelector(DOMstrings.winnerModal),
                   domWinnerImg = document.querySelector(DOMstrings.winnerImg),
-                  domWinnerPlayer = document.getElementById('winner-player');
+                  domWinnerPlayer = document.getElementById(DOMstrings.winnerPlayerID);
+                 
             // 1. Open Winner Modal
             domWinnerContainer.style.opacity = 1;
             domWinnerContainer.style.visibility = 'visible';
@@ -273,7 +276,17 @@ const UIController = ( () => {
                     domDrawContainer.style.opacity = 0;
                     domDrawContainer.style.visibility = 'hidden';
                 },900);
-            }   
+            } 
+            if(e.target.classList.contains('btn-close-modal')) {
+                const domModalContainer = document.querySelector(DOMstrings.modalContainer),
+                      domModal = document.querySelector(DOMstrings.modal);
+                
+                domModal.classList.toggle('modal-close');
+                setTimeout(() => { // We set a timer to wait the transition effect
+                    domModalContainer.style.opacity = 0;
+                    domModalContainer.style.visibility = 'hidden';
+                },900);
+            } 
         },
         // ==================== DOM Strings ====================
         getDOMstrings:() => DOMstrings
@@ -296,7 +309,7 @@ const controller = ((tictacCtrl, UICtrl) => {
     }
     //Btn-Next Round click
     const ctrlNextRound = (e) => {
-        console.log('Next round');
+        prinTest('Next round');
         // 1. Select a random Player to plat first
         UICtrl.displayReset(false)
         // 2. Close the modal UI                     
@@ -335,7 +348,7 @@ const controller = ((tictacCtrl, UICtrl) => {
     };
     //Btn-New Game click
     const ctrlNewGame = (e) => {
-        console.log('New Game');
+        prinTest('New Game');
         // 1. Select a random Player to plat first
         activePlayer = tictacCtrl.randomPlayer();
         // 2. Display the Modal        
@@ -343,7 +356,7 @@ const controller = ((tictacCtrl, UICtrl) => {
     };   
     //Btn-Start click
     const ctrlStart = (e) => {
-        console.log('Start the Game');
+        prinTest('Start the Game');
         // 1. Check if the active player selected an animal 
         if (activePlayer.activePlayer.animalClass === "") return alert('Please select an Animal');
         // 3. Activate de game state
@@ -362,7 +375,7 @@ const controller = ((tictacCtrl, UICtrl) => {
     };
     //Btn-Reset click
     const ctrlResetGame = (e) => {
-        console.log('Reset');
+        prinTest('Reset');
         // 1. Reset UI and reset all variables
         controller.init();
     }; 
@@ -376,7 +389,7 @@ const controller = ((tictacCtrl, UICtrl) => {
 
     return {        
         init: () => { 
-            console.log('App has started');
+            prinTest('App has started');
             ctrlplayerSelection = '', gameState = false, ctrlboxCliked = true,  
             activePlayer = '', ctrlPlayerOne = '', ctrlPlayerTwo = '';
             tictacCtrl.resetTicTac(); 
