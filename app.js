@@ -1,7 +1,3 @@
-const prinTest = (test) => {
-    return console.log(test)
-}
-let prueba;
 const tictacControler = ( () => {
     const winCombination = [[0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 4, 8], [6, 4, 2], [2, 5, 8], [1, 4, 7], [0, 3, 6]];
     const data = {
@@ -399,7 +395,7 @@ const controller = ((tictacCtrl, UICtrl) => {
         }
     };
 
-})(tictacControler,UIController,prinTest);
+})(tictacControler,UIController);
 
 controller.init();
 
